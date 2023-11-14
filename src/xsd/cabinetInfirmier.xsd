@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XmlSchema.xsd to edit this template
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.ujf-grenoble.fr/l3miage/medical"
+           targetNamespace="http://www.ujf-grenoble.fr/l3miage/medical"
+           elementFormDefault="qualified">
+
+
+    <xs:element name="cabinet" type="Cabinet" />
+    <xs:element name="patient" type="Patient"/>
+    <!-- Type complex Cabinet contient une liste de sous éléments contenant : 
+    un nom (String), une adresse de type Adresse, une liste des infirmiers de Type Infirmiers, et une
+    liste de patients de type Patients -->
+    <xs:complexType name="Cabinet">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string" />
+            <xs:element name="adresse" type="Adresse" />
+            <xs:element name="infirmiers" type="Infirmiers" />
+            <xs:element name="patients" type="Patients" />
+        </xs:sequence>
+        
+        
+        <!-- Existance des infirmiers depuis l'id intervenant dans patient: a pour but de s'assurer de l'existance de l'intervenant  associé au patient dans infirmiers--> 
+        <xs:keyref name="keyExInfirmier" refer="keyUniqueInfirmier">
+            <xs:selector xpath="infirmiers/infirmier"/>
+            <xs:field xpath="infirmiers/infirmier/@id"/>
+            <xs:field xpath="patients/patient/visite/@intervenant"/>
+        </xs:keyref>
+    </xs:complexType>
+
+    <!-- Type complex Adresse contenant une séquence : un numéro de type Numéro, une rue de type
+    Rue, une Ville de type Ville, et un code postal de type CodePostal -->
+    <xs:complexType name="Adresse">
+        <xs:sequence>
+            <xs:element name="numero" type="Numero" />
+            <xs:element name="rue" type="Rue" />
+            <xs:element name="ville" type="Ville" />
+            <xs:element name="codePostal" type="CodePostal" />
+        </xs:sequence>
+    </xs:complexType>
+    <!-- -->
+    <xs:simpleType name="Numero"> 
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{0,3}(bis){0,1}" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    
+    <!-- Type complex Infirmiers contenant une séquence de n Infirmier ( entier n>=0)  -->
+    <xs:complexType name="Infirmiers">
+        <xs:sequence>
+            <xs:element name="infirmier" type="Infirmier" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        
+         <!-- Unicité des infirmiers --> 
+        <xs:key name="cleUniqueInfirmiers">
+            <xs:selector xpath="infirmier"/>
+            <xs:field xpath="infirmier/@id"/>    
+        </xs:key>
+    </xs:complexType>
+    
+    
+    
+    <!-- Type complex Infirmiers contenant une séquence de n Infirmier ( entier n>=0)  -->
+    <xs:complexType name="Infirmier">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string" /> <!-- Pas de contrainte forte car le fils
+            d'elon Musk s'appelle XÆ A-12 -->
+            <xs:element name="prenom" type="xs:string" /> <!-- Pas de contrainte forte car le fils
+            d'elon Musk s'appelle XÆ A-12 -->
+            <xs:element name="photo" type="Photo" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" /> <!---
+        à modifier si contrainte-->
+    </xs:complexType>
+
+
+    <!-- Ceci est un type complexe Patients contenant une liste de patients de type patient -->
+    <xs:complexType name="Patients">
+        <xs:sequence>
+            <xs:element name="patient" type="Patient" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        
+        <!-- Unicité des patients --> 
+        <xs:key name="cleUniquePatient">
+            <xs:selector xpath="patient"/>
+            <xs:field xpath="patient/nom"/>     <!-- identification du patient par son nom  --> 
+        </xs:key>
+    </xs:complexType>
+
+
+    <!-- Ceci est un type Patient contenant une sequence d'éléments relatifs aux données du patient:
+    nom, prénom, adresse, sexe, date de naissance, numéro de sécurité sociale et la prochaine visite
+    programmée -->
+
+    <xs:complexType name="Patient">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string" />
+            <xs:element name="prenom" type="xs:string" />
+
+            <xs:element name="sexe" type="Sexe" />
+
+            <xs:element name="naissance" type="xs:date" />
+
+            <xs:element name="numero" type="NumeroSecu" />
+            <xs:element name="adresse" type="AdresseP" />
+
+            <xs:element name="visite" type="Visite" />
+
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="AdresseP">
+        <xs:sequence>
+            <xs:element name="etage" type="xs:int" minOccurs="0" maxOccurs="1"/> <!-- etage à été laissé en int car pourquoi pas un sous sol d'immeuble aménagé -->
+            <xs:element name="numero" type="Numero"/>
+
+            <xs:element name="rue" type="Rue"/>
+
+            <xs:element name="ville" type="Ville"/>
+            <xs:element name="codePostal" type="CodePostal"/>
+
+
+            
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <!--Type
+    simple Numero relatif au numéro de sécurité sociale du patient -->
+    <xs:simpleType name="NumeroSecu">
+        <xs:restriction base="xs:string">
+            <xs:pattern
+                value="[123478]\d{2}(0[1-9]|1[012]|[23]\d|4[012]|[5-9]\d)((0[1-9]|[1-8]\d|9[0-6]|2[AB])\d(0[1-9]|[1-9]\d)|9[78]\d(0[1-9]|[1-9]\d)|99\d(0[1-9]|[1-9]\d))\d(0[1-9]|[1-9]\d)(0[1-9]|[1-8]\d|9[0-7])" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Un type complexe Visite pour représenter les attributs de la visite contenant l'id de
+    l'intervenant et la date d'intervention-->
+    <xs:complexType name="Visite">
+        <xs:sequence>
+           <!-- <xs:element name="intervenant" type="Intervenant" minOccurs="0" maxOccurs="1"/>--> <!-- on ajoute cela pour les fiches patients -->
+            <xs:element name="acte" type="Acte" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="date" type="xs:date" />
+        <xs:attribute name="intervenant" type="xs:string" />
+    </xs:complexType>
+    <!--<xs:complexType name="Intervenant">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="prenom" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType> -->
+
+    <xs:complexType name="Acte">
+        <xs:attribute name="id" type="RegexActe"></xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="RegexActe">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{3}"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <!-- Ceci est un Simple type Sexe basé sur String  réstreint à une énumération: F,M -->
+    <xs:simpleType name="Sexe">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="F" />
+            <xs:enumeration value="M" />
+        </xs:restriction>
+
+
+    </xs:simpleType>
+
+    <!--Ceci
+    est un type simple Photo représentant la photo de l'infirmier -->
+    <xs:simpleType name="Photo">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-z0-9]*\.(jpg|png|jpeg)"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--Ceci
+    est un type simple Rue représentant le nom de la rue  du patient  -->
+
+    <xs:simpleType name="Rue">
+        <xs:restriction base="xs:string">
+            <xs:pattern
+                value="([a-z]|[A-Z]|[àâäéèêëïîôöùûüÿç])([a-z]|[A-Z]|[- 'àâäéèêëïîôöùûüÿç]){10,256}([a-z]|[A-Z]|[àâäéèêëïîôöùûüÿç])">
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <!--Ceci
+    est un type simple Ville représentant le nom de la  ville   du patient  -->
+
+    <xs:simpleType name="Ville">
+        <xs:restriction base="xs:string">
+            <xs:pattern
+                value="([a-z]|[A-Z]|[àâäéèêëïîôöùûüÿç])([a-z]|[A-Z]|[- 'àâäéèêëïîôöùûüÿç]){1,256}([a-z]|[A-Z]|[àâäéèêëïîôöùûüÿç])">
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <!--Ceci
+    est un type simple CodePostal représentant le code postal  de la  ville   du patient  -->
+
+    <xs:simpleType name="CodePostal">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(0[1-9]|[1-9]\d)\d{3}"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+</xs:schema>

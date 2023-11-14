@@ -1,0 +1,108 @@
+<html xmlns:ci="http://www.ujf-grenoble.fr/l3miage/medical">
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>pageInfirmiere</title>
+        <script src="https://kit.fontawesome.com/1a6c3274b4.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="./pageInfirmiere.css">
+        <script type="text/javascript">
+                    function scrollToConsultations() { 
+                    event.preventDefault();
+                    const accueil = document.querySelector(".listePatients");
+                    accueil.scrollIntoView();
+                   
+                     }
+                </script><script type="text/javascript">
+                    function openFacture(prenom, nom, actes) {
+                        var width  = 500;
+                        var height = 300;
+   if(window.innerWidth) {
+       var left = (window.innerWidth-width)/2;
+       var top = (window.innerHeight-height)/2;
+   }
+   else {
+       var left = (document.body.clientWidth-width)/2;
+       var top = (document.body.clientHeight-height)/2;
+   }
+   var factureWindow = window.open('','facture','menubar=yes, scrollbars=yes, top='+top+', left='+left+', width='+width+', height='+height+'');
+   factureText = "Facture pour : " + prenom + " " + nom +" "+ actes
+   factureWindow.document.write(factureText);}
+                </script>
+    </head>
+    <body>
+        <nav class="navbar">
+            <ul>
+                <li>
+                    <a href="#" class="logo">MON CABINET</a>
+                </li>
+                <ul class="secondNavList">
+                    <li onclick=" scrollToConsultations() ">
+                        <a href="">CONSULTATIONS</a>
+                    </li>
+                    <li>
+                        <a href="#">SERVICES</a>
+                    </li>
+                    <li>
+                        <a href="#">CONTACTS</a>
+                    </li>
+                </ul>
+            </ul>
+        </nav>
+        <div class="accueil">
+            <h3> Les infirmi&egrave;res sont l'hospitalit&eacute; de l'h&ocirc;pital</h3>
+            <p>
+                Int&eacute;grit&eacute;, Humanit&eacute;, Respect, Collaboration 
+                <br>
+            </p>
+        </div>
+        <div class="listePatients">
+            <div class="logo-text">
+                <h5>Bonjour Sophie,</h5>
+                <p>Aujourd'hui, vous avez 2 patient(s)</p>
+                <h5 class="consultations">Consultations du jour : </h5>
+            </div>
+            <div class="patients">
+                <div class="patient">
+                    <h5>Orouge Elvire</h5>
+                    <p>
+                        Adresse :  Rond-Point de la Croix de Vie, 38700 La Tronche
+                        <br>
+                    </p>
+                    <H6>Actes : </H6>
+                    <ul>
+                        <li>300 - 
+            Pansement de br&ucirc;lure &eacute;tendue ou de plaie chimique ou thermique &eacute;tendue, sur une surface sup&eacute;rieure &agrave; 5% de la surface corporelle.
+        </li>
+                    </ul>
+                    <input type="button" value="Facture" onclick=" 
+                openFacture(
+                'Elvire',
+                'Orouge',
+                '300')
+            ">
+                </div>
+                <div class="patient">
+                    <h5>Pien Oscare</h5>
+                    <p>
+                        Adresse :  rue Casimir Brenier, 38000 Grenoble
+                        <br>
+                    </p>
+                    <H6>Actes : </H6>
+                    <ul>
+                        <li>101 - 
+            Pr&eacute;l&egrave;vement par ponction veineuse directe
+        </li>
+                        <li>104 - 
+            Inection intraveineuse directe isol&eacute;e.
+        </li>
+                    </ul>
+                    <input type="button" value="Facture" onclick=" 
+                openFacture(
+                'Oscare',
+                'Pien',
+                '101')
+            ">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
