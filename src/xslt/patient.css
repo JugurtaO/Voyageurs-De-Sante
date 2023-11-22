@@ -1,26 +1,15 @@
 
 
-/*
-.main{
-    position: relative;
-    
-    width: 100%;
-    max-width: 400px;
-    min-height: 600px;
-    margin: 50px;
-
-    background: #fff;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    box-shadow: 0 35px 55px rgba(0,0,0,0,1);
-    border: 1px solid gainsboro;
+body{
+     background: url("./gradient.jpeg") no-repeat fixed 40% ;
+   background-size: cover;
+   background-position: center;
+   background-size: cover;
 }
-
-
 /*Left css*/
 .main .left{
     position: relative;
-    background: #e7e7e7; 
+    background:whitesmoke;    /*#e7e7e7*/
     padding: 40px;
     font-size:18px;
 
@@ -30,20 +19,12 @@
     width: 100%;
 }
 
-/*right css
-.main .right{
-    position: relative;
-    background: #fff;
-    padding: 40px;
-
-}
-
-*/
 
 .main{
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: 100px;
 }
 
 .right img{
@@ -51,4 +32,43 @@
     height: 100%;
     padding-right:100px;
     
+}
+table, th, td {
+  border: 1px solid;
+}
+
+
+/* Accueil */
+
+.accueil h3{
+    /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+    font-weight: bolder;
+    display: flex;
+    justify-content:center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.3em;
+    text-shadow: 1px 3px 2px white;
+    
+     
+}
+
+
+.accueil p {
+    display: flex;
+    justify-content: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5em;
+    font-size: 2.3em;
+    text-shadow: 1px 3px 2px white;
+   
+    
+    
+}
+
+span {
+    color:black;
+    font-size:small;
+}
+li{
+    font-size: medium;
 }

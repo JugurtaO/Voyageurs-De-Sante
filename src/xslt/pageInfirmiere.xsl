@@ -72,7 +72,9 @@
                 <!-- barre de navigation -->
                 <nav class="navbar">
                     <ul>
-                        <li ><a href="#" class="logo">MON CABINET</a></li>
+                        <li >
+                            <a href="#" class="logo">MON CABINET</a>
+                        </li>
                         
                         <ul class="secondNavList">
                             <li >
@@ -80,21 +82,25 @@
                                 <a href="" >CONSULTATIONS</a>
                             </li>
                             
-                        <li > <a href="#">SERVICES</a> </li>
-                        <li > <a href="#">CONTACTS</a> </li>
+                            <li > 
+                                <a href="#">SERVICES</a> 
+                            </li>
+                            <li > 
+                                <a href="#">CONTACTS</a> 
+                            </li>
                         </ul>
                       
 
-            </ul>
-        </nav>
+                    </ul>
+                </nav>
 
-        <!-- Message d'accueil -->
-        <div class="accueil">
-            <h3> Les infirmières sont l'hospitalité de l'hôpital</h3>
-            <p>Intégrité, Humanité, Respect, Collaboration <br/> </p>
-        </div>
+                <!-- Message d'accueil -->
+                <div class="accueil">
+                    <h3> Les infirmières sont l'hospitalité de l'hôpital</h3>
+                    <p>Intégrité, Humanité, Respect, Collaboration <br/> </p>
+                </div>
         
-        <!-- -->
+                <!-- -->
                 <xsl:apply-templates select="ci:cabinet"/>
             </body>
         </html>
@@ -103,8 +109,8 @@
     <!-- template pour matcher le cabinet étant l'accueil de la page-->
     <xsl:template match="ci:cabinet">
         <div >
-             <xsl:attribute name="class">listePatients</xsl:attribute>
-             <div class="logo-text">
+            <xsl:attribute name="class">listePatients</xsl:attribute>
+            <div class="logo-text">
                 <h5>Bonjour <xsl:value-of select="//ci:infirmier[@id=$destinedId]/ci:prenom/text()"/>,</h5> 
                 <p>Aujourd'hui, vous avez <xsl:value-of select="count(//ci:patient/ci:visite[@intervenant=$destinedId])"/> patient(s)</p>
                 <h5 class="consultations">Consultations du jour : </h5>
@@ -127,10 +133,32 @@
     
     <!-- Template qui match l'élément Patient et contient les coordonées du patient -->
     <xsl:template match="ci:patient">
-      
-        <!--<xsl:param name="nomPatient"  select="ci:nom" /> 
-        <xsl:param name="prenomPatient"  select="ci:prenom" /> -->  
-
+        <div class="main">
+            <div class="left">
+       
+                <h3>
+                    <xsl:value-of select="concat(ci:nom,' ' )"/> 
+                    <xsl:value-of select="ci:prenom"/>
+                </h3>
+            
+                <ul>
+                    <li>
+                        <xsl:apply-templates select="ci:adresse"/>
+                    </li> 
+                </ul>
+                <xsl:apply-templates select="ci:visite"/>
+            
+            </div>
+            
+            <div class="right">
+                <img src="patient.jpeg"/>
+            </div>
+        
+        </div>
+        
+        
+       
+        <!--
         <div>
             <xsl:attribute name="class">patient</xsl:attribute>
             <h5> 
@@ -140,7 +168,8 @@
             <xsl:apply-templates select="ci:adresse"/>
             <xsl:apply-templates select="ci:visite" />
            
-        </div>  
+        </div>   
+        -->
        
     </xsl:template>
     
@@ -162,20 +191,29 @@
     
     <!-- Ici création de la liste qui contiendra tous les actes du patient-->
     <xsl:template match="ci:visite">
-        <H6>Actes : </H6>
+        
+        <h4>Actes du patients : </h4>
         <!-- afin d'éviter de remonter dans l'arboresence dans nos chemins XPath, on crée à ce niveau la liste des actes du patient courant sous forme d'un node-set stocké dans la variable actesDuPatient-->
-        <xsl:variable name="actesDuPatient" select="ci:acte/@id"/>  
+
+        <xsl:variable name="actesDuPatient" select="ci:acte/@id"/> 
+        <xsl:variable name="maChaine" select=""/>
         
-      <!--  <h2> ***************</h2>
-        <xsl:copy-of select="$actesDuPatient" /> 
-         <h2> ***************</h2> -->
-        
+        <!-- Extraire les id des actes en les concatenants avec la structure foreach -->
+        <xsl:for-each select="ci:acte">
+            <tr>
+                <xsl:variable name="current" select="@id" />
+                <xsl:variable name="maChaine" select="concat($maChaine, $current)" />
+                    
+                
+            </tr>
+        </xsl:for-each>
+       
         <ul>
             <xsl:apply-templates select="ci:acte"/>
+            
         </ul>
+              
         
-        <!-- Création du bouton pour visualiser la facture de chaque patient --> 
-       
         <input> 
             <xsl:attribute name="type">button</xsl:attribute>
             <xsl:attribute name="value">Facture</xsl:attribute>
@@ -183,15 +221,14 @@
                 openFacture(
                 '<xsl:value-of select="../ci:prenom"/>',
                 '<xsl:value-of select="../ci:nom"/>',
-                '<xsl:value-of select="$actesDuPatient"/>')
+                '<xsl:copy-of select="$maChaine"/>')
             </xsl:attribute>
         </input>
         
         
-    </xsl:template>
-    
-    
-    <!-- Lister les actes correspondants à chaque patient concerné-->
+      
+        
+    </xsl:template>        <!-- Lister les actes correspondants à chaque patient concerné-->
     <xsl:template match="ci:acte">
         <xsl:variable name="idC" select="@id" />
         <li>
