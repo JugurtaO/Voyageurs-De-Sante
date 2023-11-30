@@ -3,7 +3,7 @@
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>pageInfirmiere</title>
         <script src="https://kit.fontawesome.com/1a6c3274b4.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="../css/pageInfirmiere.css">
+        <link rel="stylesheet" href="../../css/pageInfirmiere.css">
         <script type="text/javascript">
                     function scrollToConsultations() { 
                     event.preventDefault();
@@ -11,9 +11,13 @@
                     accueil.scrollIntoView();
                    
                      }
-                </script><script type="text/javascript">
+                </script>
+                
+                <script type="text/javascript" src="../../js/facture.js"></script>
+                
+                <script type="text/javascript">
                     function openFacture(prenom, nom, actes) {
-                        console.log(actes);
+                        
                     
                         var width  = 500;
                         var height = 300;
@@ -26,20 +30,10 @@
        var top = (document.body.clientHeight-height)/2;
    }
    var factureWindow = window.open('','facture','menubar=yes, scrollbars=yes, top='+top+', left='+left+', width='+width+', height='+height+'');
-   factureText = "Facture pour : " + prenom + " " + nom +" ------ " + actes 
-   factureWindow.document.write(factureText);
-   
-   
-   
-   
-   
-   factureWindow.document.body.style.backgroundColor = "wheat"; 
-   
-   
-
-}
-   
-                </script>
+  /*factureText = "Facture pour : " + prenom + " " + nom +" "+ actes*/
+     var factureText = afficherFacture(prenom, nom, actes);
+   factureWindow.document.write(factureText);}
+                </script> 
     </head>
     <body>
         <nav class="navbar">
@@ -86,15 +80,16 @@
                             </li>
                         </ul>
                         <h4>Actes du patients : </h4>
-                        <h1 id="300"></h1>
                         <ul>
-                            <li>300 - Pansement de br&ucirc;lure &eacute;tendue ou de plaie chimique ou thermique &eacute;tendue, sur une surface sup&eacute;rieure &agrave; 5% de la surface corporelle.</li>
+                            <li>300 - 
+            Pansement de br&ucirc;lure &eacute;tendue ou de plaie chimique ou thermique &eacute;tendue, sur une surface sup&eacute;rieure &agrave; 5% de la surface corporelle.
+        </li>
                         </ul>
                         <input type="button" value="Facture" onclick=" 
                 openFacture(
                 'Elvire',
                 'Orouge',
-                '300Pansement de br&ucirc;lure &eacute;tendue ou de plaie chimique ou thermique &eacute;tendue, sur une surface sup&eacute;rieure &agrave; 5% de la surface corporelle.') 
+                '300')
             ">
                     </div>
                     <div class="right">
@@ -113,16 +108,19 @@
                             </li>
                         </ul>
                         <h4>Actes du patients : </h4>
-                        <h1 id="104"></h1>
                         <ul>
-                            <li>101 - Pr&eacute;l&egrave;vement par ponction veineuse directe</li>
-                            <li>104 - Inection intraveineuse directe isol&eacute;e.</li>
+                            <li>101 - 
+            Pr&eacute;l&egrave;vement par ponction veineuse directe
+        </li>
+                            <li>104 - 
+            Inection intraveineuse directe isol&eacute;e.
+        </li>
                         </ul>
                         <input type="button" value="Facture" onclick=" 
                 openFacture(
                 'Oscare',
                 'Pien',
-                '101Pr&eacute;l&egrave;vement par ponction veineuse directe') 
+                '101')
             ">
                     </div>
                     <div class="right">

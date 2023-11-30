@@ -8,11 +8,10 @@
         Purpose of transformation follows.
 -->
 
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     
                 
-    xmlns:ci="http://www.ujf-grenoble.fr/l3miage/medical">
+                xmlns:ci="http://www.ujf-grenoble.fr/l3miage/medical">
                
     <xsl:output method="html"/>
 
@@ -33,10 +32,10 @@
                 
                 <link>
                     <xsl:attribute name="rel">stylesheet</xsl:attribute>
-                    <xsl:attribute name="href">./pageInfirmiere.css</xsl:attribute>
+                    <xsl:attribute name="href">../css/pageInfirmiere.css</xsl:attribute>
                    
                 </link>
-                
+                <!-- Script pour effectuer le scroll vers les patients depuis la barre de navigation à travers un click sur 'Consultations'-->
                 <script>
                     <xsl:attribute name="type">text/javascript</xsl:attribute>
                     <![CDATA[function scrollToConsultations() { 
@@ -51,6 +50,8 @@
                 <script>
                     <xsl:attribute name="type">text/javascript</xsl:attribute>
                     <![CDATA[function openFacture(prenom, nom, actes) {
+                        console.log(actes);
+                    
                         var width  = 500;
                         var height = 300;
    if(window.innerWidth) {
@@ -62,8 +63,19 @@
        var top = (document.body.clientHeight-height)/2;
    }
    var factureWindow = window.open('','facture','menubar=yes, scrollbars=yes, top='+top+', left='+left+', width='+width+', height='+height+'');
-   factureText = "Facture pour : " + prenom + " " + nom +" "+ actes
-   factureWindow.document.write(factureText);}]]>
+   factureText = "Facture pour : " + prenom + " " + nom +" ------ " + actes 
+   factureWindow.document.write(factureText);
+   
+   
+   
+   
+   
+   factureWindow.document.body.style.backgroundColor = "wheat"; 
+   
+   
+
+}]]>
+   
                 </script>
             </head>
             
@@ -151,25 +163,13 @@
             </div>
             
             <div class="right">
-                <img src="patient.jpeg"/>
+                <img src="../images/patient.jpeg"/>
             </div>
         
         </div>
         
         
-       
-        <!--
-        <div>
-            <xsl:attribute name="class">patient</xsl:attribute>
-            <h5> 
-                <xsl:value-of select="concat(ci:nom,' ' )"/> 
-                <xsl:value-of select="ci:prenom"/>
-            </h5>
-            <xsl:apply-templates select="ci:adresse"/>
-            <xsl:apply-templates select="ci:visite" />
-           
-        </div>   
-        -->
+      
        
     </xsl:template>
     
@@ -189,6 +189,13 @@
         
     </xsl:template>
     
+    
+   
+
+    <!-- Content:template -->
+
+
+
     <!-- Ici création de la liste qui contiendra tous les actes du patient-->
     <xsl:template match="ci:visite">
         
@@ -196,41 +203,63 @@
         <!-- afin d'éviter de remonter dans l'arboresence dans nos chemins XPath, on crée à ce niveau la liste des actes du patient courant sous forme d'un node-set stocké dans la variable actesDuPatient-->
 
         <xsl:variable name="actesDuPatient" select="ci:acte/@id"/> 
-        <xsl:variable name="maChaine" select=""/>
+        <xsl:variable name="maChaine" >""</xsl:variable> 
+        
         
         <!-- Extraire les id des actes en les concatenants avec la structure foreach -->
-        <xsl:for-each select="ci:acte">
-            <tr>
-                <xsl:variable name="current" select="@id" />
-                <xsl:variable name="maChaine" select="concat($maChaine, $current)" />
-                    
-                
-            </tr>
-        </xsl:for-each>
+       <!-- <xsl:for-each select="ci:acte">
+            
+            <xsl:variable name="current" select="@id" />
+            <xsl:variable name="maChaine" select="concat($maChaine,$current)" />
+            
+            
+        </xsl:for-each>    -->
+        
        
+          
+        <h1> <xsl:copy-of select="$actesDuPatient"/></h1>
         <ul>
             <xsl:apply-templates select="ci:acte"/>
+            
             
         </ul>
               
         
         <input> 
+            <xsl:variable name="idC" select="ci:acte/@id" />
+
             <xsl:attribute name="type">button</xsl:attribute>
             <xsl:attribute name="value">Facture</xsl:attribute>
             <xsl:attribute name="onclick"> 
                 openFacture(
                 '<xsl:value-of select="../ci:prenom"/>',
                 '<xsl:value-of select="../ci:nom"/>',
-                '<xsl:copy-of select="$maChaine"/>')
+                '<xsl:value-of select="concat($idC,$actes/acte[@id=$idC]/text())"/>') 
             </xsl:attribute>
         </input>
         
         
       
         
-    </xsl:template>        <!-- Lister les actes correspondants à chaque patient concerné-->
+    </xsl:template> 
+    <!-- Lister les actes correspondants à chaque patient concerné-->
+ 
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+
+
     <xsl:template match="ci:acte">
         <xsl:variable name="idC" select="@id" />
+        
         <li>
             <xsl:value-of select="$idC"/> - <xsl:value-of select="$actes/acte[@id=$idC]/text()"/>
             <!-- Ici j'ai supprimé carrément le vocabulaire de actes; en fait il est directement visible via la variable actes tout en haut en lui rajoutant le chemin relatif au fichier actes.xml-->

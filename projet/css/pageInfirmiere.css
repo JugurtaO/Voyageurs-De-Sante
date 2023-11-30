@@ -15,7 +15,7 @@ body{
 .navbar ul {
     height:50px;
     color: #f3f3f4;
-    background: url(./)  no-repeat 10%;
+    background: url()  no-repeat 10%;
     background-size: cover;
     display: flex;
     flex-direction: row;
@@ -41,7 +41,7 @@ body{
    display:flex;
    flex-direction: column;
    justify-content: center;
-   background: url("./background.jpg") no-repeat fixed 40% ;
+   background: url("../html/images/background.jpg") no-repeat fixed 40% ;
    background-size: cover;
    background-position: center;
    background-size: cover;

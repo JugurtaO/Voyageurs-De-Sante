@@ -23,7 +23,7 @@
                 <title>Fiche_Patient</title>
                 <link>
                     <xsl:attribute name="rel">stylesheet</xsl:attribute>
-                    <xsl:attribute name="href">./patient.css</xsl:attribute>
+                    <xsl:attribute name="href">../css/patient.css</xsl:attribute>
                    
                 </link>
             </head>
@@ -75,7 +75,7 @@
         </div>
             
         <div class="right">
-            <img src="patient.jpeg"/>
+            <img src="../images/patient.jpeg"/>
         </div>
         
         
